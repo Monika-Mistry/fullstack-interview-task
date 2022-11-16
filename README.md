@@ -75,3 +75,54 @@ Financial Companies - localhost:8082
 
 Admin - localhost:8083
 - `/investments/:id` get an investment record by id
+- `/investments/export/csv` get all user holdings as a csv **(NEW)**
+
+### Changes
+
+#### Tests
+Tests have been added for new functionality added and mock calls to finanial companies API. The tests use `jest` and can be run with the following commands:
+
+```bash
+# To run the all tests once
+npm run test
+
+# To run tests and watch for changes
+npm run test:watch
+```
+
+#### Dependencies
+- Replaced deprecated dependency `request` with `axios`.
+- Updated dependencies to latest versions.
+- Added `jest` dependency for testing
+
+#### Questions
+1. How might you make this service more secure?
+    * Encrypt the data in-transit
+    * Ensure all user has permissions to make each of the API calls
+    * Ensure user has permission to use admin API calls
+    * More requirements gathering to determine how this exported user holdings data will be used. Ensure that there isn't more data provided than is necessary.
+    * Making sure that users do not have extra access that they don't require
+    * Assumptions were made for this task for security middleware, permissions access and PII safe protocols. Making sure that users are properly authenticated and authorised. And that access control is properly implemented within the services.
+    * Ensuring the services are not using deprecated or out-of-date dependencies - only admin service dependencies were updated.
+
+2. How would you make this solution scale to millions of records?
+    * Make use of caching
+    * Paginate responses from API calls
+    * Process data in batches/chunks
+    * Would need to handle large volumes of data in export. This would perhaps need to be broken down into smaller pieces to ensure this data can be sent or opened as a csv file. More information would be needed for how the exported data would be used to determine the best approach.
+
+3. What else would you have liked to improve given more time?
+    
+    I spent the advised 1-2 hours on the task and there are a few things I would improve within the work I have done in the `admin` service. I have not opened a PR for this work as it is unfinished and requires some further work on the unit tests.
+
+    * Fix test with resolved mock axios calls. I had some difficulties getting this test working with the time I had.
+    * Improve functionality for processing investments data to csv. Find a more efficient way to duplicate investments with multiple holdings.
+    * Use a csv library to generate csv file rather than a more manual generation which has been implemented.
+    * Extend test suite to include more extensive testing for edge cases.
+    * Better and more informative error handling within functions and API calls
+
+
+
+
+
+

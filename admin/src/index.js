@@ -1,7 +1,8 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const config = require("config")
-const request = require("request")
+const axios = require("axios")
+const {convertToCsv} = require("./export")
 
 const app = express()
 
@@ -9,14 +10,16 @@ app.use(bodyParser.json({limit: "10mb"}))
 
 app.get("/investments/:id", (req, res) => {
   const {id} = req.params
-  request.get(`${config.investmentsServiceUrl}/investments/${id}`, (e, r, investments) => {
-    if (e) {
-      console.error(e)
+  axios.get(`${config.investmentsServiceUrl}/investments/${id}`)
+    .then(investments => res.send(investments))
+    .catch(error => {
+      console.error(error)
       res.send(500)
-    } else {
-      res.send(investments)
-    }
-  })
+    })
+})
+
+app.get("/investments/export/csv", async (req, res) => {
+  res.json(await convertToCsv())
 })
 
 app.listen(config.port, (err) => {
